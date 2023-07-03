@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring_boot_deployment
+  name: spring-boot-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: spr_app
+      app: spr-app
   template:
     metadata:
       labels:
-        app: spr_app
+        app: spr-app
     spec:
       containers:
-        - name: spr_app
+        - name: spr-app
           image: subramanya777-spr-image:v1
           ports:
             - containerPort: 8081
@@ -22,6 +22,4 @@ spec:
               value: "value1"
             - name: ENV_VARIABLE_2
               value: "value2"
-
-
 
