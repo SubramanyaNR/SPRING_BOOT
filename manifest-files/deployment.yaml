@@ -19,6 +19,6 @@ spec:
             - containerPort: 8081
           env:
             - name: ENV_VARIABLE_1
-              value: value1
+              value: "value1"
             - name: ENV_VARIABLE_2
-              value: value2
+              value: "value2"
