@@ -21,7 +21,7 @@ pipeline {
         stage('deploy') {
         steps{
         // Deploy the Docker image
-        sh 'kubectl apply -f D:/1JOB & REZUME/platform/java-spring-boot-crud-without-database-master/java-spring-boot-crud-without-database-master/manifest-files/deployment.yaml'
+        sh 'kubectl apply -f https://github.com/SubramanyaNR/SPRING_BOOT.git/manifest-files/deployment.yaml'
         sh 'kubectl apply -f /manifest-files/service.yaml'
         sh 'kubectl apply -f /manifest-files/ingress.yaml'
       }
