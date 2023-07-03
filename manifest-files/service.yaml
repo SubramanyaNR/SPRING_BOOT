@@ -4,7 +4,7 @@ metadata:
   name: my-service
 spec:
   selector:
-    app: spr_app
+    app: spr-app
   ports:
     - name: http
       protocol: TCP
