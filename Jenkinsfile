@@ -1,38 +1,19 @@
-pipeline {
-    agent any
-    
-    stages {
-        stage('checkout and install') {
-            steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/SubramanyaNR/SPRING_BOOT.git']])       
-                sh 'mvn clean install'    
-            }
-        }
+stage('Deploy') {
+    steps {
+        // Install and configure AWS CLI
+        sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
+        sh 'unzip awscliv2.zip'
+        sh './aws/install'
+        sh 'aws configure set aws_access_key_id YOUR_AWS_ACCESS_KEY'
+        sh 'aws configure set aws_secret_access_key YOUR_AWS_SECRET_ACCESS_KEY'
+        sh 'aws configure set default.region YOUR_AWS_REGION'
         
-        stage('Build Docker Image') {
-            steps {
-                // Build Docker image using Dockerfile and JAR file
-                sh 'docker build -t spr_boot .'
-            }
-        }
+        // Authenticate with EKS
+        sh 'aws eks update-kubeconfig --name spr_cluster --region us-east-2'
         
-        stage('Push to Docker Registry') {
-            steps {
-                // Push Docker image to a Docker registry
-                withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u subramanya777 -p Octagon@744'
-                    sh 'docker push spr_name'
-                }
-            }
-        }
-        
-        stage('Deploy to Kubernetes') {
-            steps {
-                // Deploy the Docker image to Kubernetes using manifest files
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
-                sh 'kubectl apply -f ingress.yaml'
-            }
-        }
+        // Deploy the Docker image
+        sh 'kubectl apply -f deployment.yaml'
+        sh 'kubectl apply -f service.yaml'
+        sh 'kubectl apply -f ingress.yaml'
     }
 }
