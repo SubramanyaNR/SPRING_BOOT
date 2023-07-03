@@ -12,8 +12,8 @@ stage('Deploy') {
         sh 'aws eks update-kubeconfig --name spr_cluster --region us-east-2'
         
         // Deploy the Docker image
-        sh 'kubectl apply -f deployment.yaml'
-        sh 'kubectl apply -f service.yaml'
-        sh 'kubectl apply -f ingress.yaml'
+        sh 'kubectl apply -f /manifest-files/deployment.yaml'
+        sh 'kubectl apply -f /manifest-files/service.yaml'
+        sh 'kubectl apply -f /manifest-files/ingress.yaml'
     }
 }
